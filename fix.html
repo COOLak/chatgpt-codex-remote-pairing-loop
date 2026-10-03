@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stuck in the Authorize this phone loop? · ChatGPT Codex Remote pairing loop</title>
+  <meta name="description" content="How to get ChatGPT for Android out of the Codex Remote pairing loop: check for 1.2026.265, install 1.2026.272 from the Google Play beta, pair with a fresh code.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/fix.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ChatGPT Codex Remote pairing loop">
+  <meta property="og:title" content="Stuck in the Authorize this phone loop?">
+  <meta property="og:description" content="How to get ChatGPT for Android out of the Codex Remote pairing loop: check for 1.2026.265, install 1.2026.272 from the Google Play beta, pair with a fresh code.">
+  <meta property="og:url" content="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/fix.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Story</a>
+  <a href="fix.html">Stuck in the loop?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="reports.html">Public reports</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop">Repository</a>
+</nav>
+<h1>Stuck in the "Authorize this phone" loop?</h1>
+<p>This applies to <strong>ChatGPT for Android</strong> when pairing with Codex on a computer through <strong>Codex Remote</strong> ("Connect computer" in the app). The computer can run Windows, macOS or Linux.</p>
+<h2>Typical symptoms</h2>
+<ul>
+<li>You scan the pairing QR code, sign in, and confirm your account on the "Confirm this is the ChatGPT account you want to use with Codex Remote" page.</li>
+<li>The app shows "Pairing..", then "Allow this phone to access ChatGPT on your computer?" with an <strong>Authorize this phone</strong> button.</li>
+<li>Tapping it sends you back to the sign-in page, and the whole thing repeats.</li>
+<li>No error message appears on the phone or on the computer. The computer never lists the phone.</li>
+</ul>
+<h2>1. Check your ChatGPT version</h2>
+<p>On the phone: <strong>ChatGPT → Settings → About</strong>. Or, with the phone connected over USB debugging:</p>
+<pre class="notranslate"><code class="notranslate">adb shell dumpsys package com.openai.chatgpt | findstr versionName
+</code></pre>
+<p>(<code class="notranslate">grep</code> instead of <code class="notranslate">findstr</code> on macOS and Linux.) If it says <strong>1.2026.265</strong>, you are most likely hitting this bug.</p>
+<h2>2. Install the fixed build</h2>
+<ol>
+<li>Open the <strong>Google Play Store</strong> and go to the <strong>ChatGPT</strong> listing.</li>
+<li>Scroll down to the beta section and join the beta. It may look stuck. Give it a few minutes; Play confirms enrollment separately.</li>
+<li>Come back to the listing and <strong>tap Update</strong>. Joining the beta does nothing until you install the update.</li>
+<li>Confirm the version is <strong>1.2026.272 or newer</strong>.</li>
+</ol>
+<p>Once a regular (non-beta) release at 1.2026.272 or newer reaches your phone, a normal Play Store update should do the same job.</p>
+<p>Don't install ChatGPT APK files from third-party sites.</p>
+<h2>3. Pair again with a fresh code</h2>
+<ol>
+<li>On the computer, close the pairing dialog and open it again, so it shows a <strong>new</strong> QR code.</li>
+<li>Keep the computer's ChatGPT window open.</li>
+<li>On the phone, open <strong>ChatGPT → Codex → Connect computer → Start pairing</strong>, scan, sign in, and tap <strong>Authorize this phone</strong> once.</li>
+<li>Wait about ten seconds. The phone should show the computer as connected.</li>
+</ol>
+<h2>Still looping on 1.2026.272 or newer?</h2>
+<p>Try these one at a time, each with a fresh QR code:</p>
+<ul>
+<li>Check that the computer and the phone are signed into the <strong>same ChatGPT account and workspace</strong>.</li>
+<li>If the computer's ChatGPT app was recently switched to a different ChatGPT account, see <a href="https://github.com/openai/codex/issues/48555" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48555/hovercard">openai/codex#48555</a>.</li>
+<li>On the computer, turn remote connections off and on again, then generate a new code.</li>
+<li>If you use a VPN or ad blocker on the phone, pause it while you pair.</li>
+</ul>
+<p>Then add your phone model, Android version, ChatGPT version and computer to the <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop/issues/1">tracking issue</a> or to <a href="https://github.com/openai/codex/issues/48777" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48777/hovercard">openai/codex#48777</a>. Don't post email addresses, account IDs or pairing codes.</p>
+<footer>Privacy-sanitized public evidence. Email addresses, account and device identifiers, network names and addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to the story</a></footer>
+</main></body>
+</html>

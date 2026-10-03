@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Public reports · ChatGPT Codex Remote pairing loop</title>
+  <meta name="description" content="Public reports of the ChatGPT for Android Codex Remote pairing loop on OpenAI's Codex issue tracker, and their status.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/reports.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ChatGPT Codex Remote pairing loop">
+  <meta property="og:title" content="Public reports">
+  <meta property="og:description" content="Public reports of the ChatGPT for Android Codex Remote pairing loop on OpenAI's Codex issue tracker, and their status.">
+  <meta property="og:url" content="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/reports.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Story</a>
+  <a href="fix.html">Stuck in the loop?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="reports.html">Public reports</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop">Repository</a>
+</nav>
+<h1>Public reports</h1>
+<p>Last updated: <strong>2026-10-03</strong>. These are reports by other users on OpenAI's public Codex issue tracker. They describe the same loop on ChatGPT for Android 1.2026.265.</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Issue</th>
+<th>Opened (UTC)</th>
+<th>What it reports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/openai/codex/issues/48555" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48555/hovercard">openai/codex#48555</a></td>
+<td>2026-09-26</td>
+<td>"Authorize this phone" loops. Proposes a stale cross-account environment on the desktop as a trigger. Later comments report that 1.2026.272 pairs normally.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/openai/codex/issues/48777" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48777/hovercard">openai/codex#48777</a></td>
+<td>2026-09-27</td>
+<td>"Android 1.2026.265 (27): Codex Remote repeatedly returns to 'Authorize this phone' after successful browser authorization." Reproductions on Samsung, Xiaomi, Vivo, Nothing and other phones with Windows, macOS and Linux computers. Several users confirm the 1.2026.272 beta fixes it.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/openai/codex/issues/49179" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/49179/hovercard">openai/codex#49179</a></td>
+<td>2026-09-29</td>
+<td>"Android Codex Remote pairing loops back to login after 'Authorize this phone'."</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h2>Status from OpenAI</h2>
+<p>As of 2026-10-03:</p>
+<ul>
+<li>No OpenAI staff reply on any of these three issues.</li>
+<li>No release note or support article about the loop that we could find.</li>
+<li>The fix is available in ChatGPT for Android <strong>1.2026.272</strong> through the Google Play beta. It had not been confirmed on the regular Play Store release.</li>
+</ul>
+<h2>This case</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Diagnosis</td>
+<td>Completed 2026-10-03 by Anthropic's Claude. See the <a href="technical-analysis.html">technical analysis</a>.</td>
+</tr>
+<tr>
+<td>Fix</td>
+<td>Confirmed 2026-10-03 at 14:23:58 UTC after updating to 1.2026.272 from the Google Play beta.</td>
+</tr>
+<tr>
+<td>Report to OpenAI</td>
+<td>Not filed separately: the loop and its fix were already documented in <a href="https://github.com/openai/codex/issues/48777" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48777/hovercard">openai/codex#48777</a>.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<footer>Privacy-sanitized public evidence. Email addresses, account and device identifiers, network names and addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to the story</a></footer>
+</main></body>
+</html>

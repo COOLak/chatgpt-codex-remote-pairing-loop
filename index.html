@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ChatGPT couldn't pair with itself, so Claude found out why</title>
+  <meta name="description" content="ChatGPT on Android kept looping when pairing with ChatGPT on Windows for Codex Remote. ChatGPT wouldn't look into its own app. Anthropic's Claude read the phone's logs over USB and pinned the loop on a known ChatGPT bug in under an hour.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ChatGPT Codex Remote pairing loop">
+  <meta property="og:title" content="ChatGPT couldn't pair with ChatGPT. It took Claude to find out why.">
+  <meta property="og:description" content="Same account on both devices, and the phone still looped forever. Claude plugged into the phone over USB, read its logs and pinned the loop on a known ChatGPT bug. An OpenAI update fixed it.">
+  <meta property="og:url" content="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ChatGPT couldn't pair with ChatGPT. It took Claude to find out why.">
+  <meta name="twitter:description" content="A pairing loop in ChatGPT for Android, diagnosed by Anthropic's Claude over ADB. Story, evidence and fix.">
+  <link rel="stylesheet" href="site.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Report","name":"ChatGPT Android 1.2026.265 Codex Remote pairing loop","url":"https://coolak.github.io/chatgpt-codex-remote-pairing-loop/","dateCreated":"2026-10-03","dateModified":"2026-10-03","about":["ChatGPT","Codex Remote","Android","Claude","Samsung Galaxy S24 Ultra"],"isAccessibleForFree":true}</script>
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Story</a>
+  <a href="fix.html">Stuck in the loop?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="reports.html">Public reports</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop">Repository</a>
+</nav>
+
+<p class="kicker ok">Field report · OpenAI · Anthropic · Android</p>
+<h1>ChatGPT couldn't pair with ChatGPT. It took Claude to find out why.</h1>
+<p class="lede">My phone and my laptop were signed into the same ChatGPT account. Pairing them for Codex Remote went in circles: scan, sign in, approve, and straight back to the start. ChatGPT wouldn't look into its own app. So Anthropic's Claude plugged into the phone over USB, read its logs, and in under an hour pinned the loop on a known bug in ChatGPT for Android and found the update that fixes it.</p>
+<p><span class="status ok">Resolved</span> <span class="pill">Fixed by ChatGPT Android 1.2026.272</span> <span class="pill">Diagnosed by Claude</span> <span class="pill">Updated 2026-10-03</span></p>
+
+<section class="panel warning">
+  <h2>ChatGPT wouldn't look at itself</h2>
+  <p>The obvious first move was to ask ChatGPT what was wrong with ChatGPT. It wouldn't go there. So the job went to the competition, which, to be fair, had a shell on my laptop and a USB cable to my phone. That was the second time in two days that an OpenAI tool came up empty and Claude didn't. <a href="#not-the-first-time">More on that below</a>.</p>
+</section>
+
+<div class="grid">
+  <div class="card"><h2>Sign-ins that worked, then looped anyway</h2><div class="metric">8 / 8</div><p class="muted">every recorded one, before the update</p></div>
+  <div class="card"><h2>Time until the app gave up</h2><div class="metric">2.6–3.0 s</div><p class="muted">from a successful sign-in to the app deleting its own pairing key</p></div>
+  <div class="card"><h2>Times the laptop showed the phone</h2><div class="metric">0</div><p class="muted">its pairing screen just kept waiting</p></div>
+  <div class="card"><h2>Updates needed to fix it</h2><div class="metric">1</div><p class="muted">ChatGPT for Android 1.2026.265 → 1.2026.272</p></div>
+</div>
+
+<h2>The loop</h2>
+<p>Codex Remote lets the ChatGPT app on a phone drive Codex on a computer. You start pairing on the laptop, scan a QR code with the phone, approve, done. Mine went like this, over and over:</p>
+<div class="loop">
+  <span>Start pairing</span><b>→</b><span>Scan the QR code</span><b>→</b><span>"Pairing.."</span><b>→</b><span>Sign in with Google + passkey</span><b>→</b><span>"Confirm this is the ChatGPT account you want to use with Codex Remote"</span><b>→</b><span>Authorize</span><b>→</b><span>"Allow this phone to access ChatGPT on your computer?"</span><b>→</b><span>Authorize this phone</span><b>→</b><span>back to sign in ↺</span>
+</div>
+<p>Same account on both devices. Same Wi-Fi. No error message anywhere. The laptop sat there waiting for a phone that never showed up.</p>
+
+<h2>Enter Claude, with a USB cable</h2>
+<p class="scene">Saturday, 13:04 UTC. A Galaxy S24 Ultra on a USB cable, a Windows laptop, and a very annoyed owner.</p>
+<p>Claude was already running as an agent on the laptop. It installed Google's Android platform tools, I tapped "Allow USB debugging" on the phone, and it started reading. It went through the phone's system log, the ChatGPT desktop app's own logs, and the text on the phone's screen while I ran the loop four more times.</p>
+<p>Then it split the case up. Parallel agents took one job each: the phone, the laptop, the accounts on both, and every public bug report it could find. Next came a round of skeptics whose only job was to knock each theory down. One theory survived.</p>
+
+<h2>Everything that wasn't the problem</h2>
+<div class="grid">
+  <div class="card proof"><h3>Wrong account</h3><p>Checked on both ends. The laptop app and the phone app are on the same personal ChatGPT account, and the Codex Remote confirmation page showed that account on every attempt I captured.</p></div>
+  <div class="card proof"><h3>Old QR code</h3><p>A code only 8 seconds old failed exactly like an 18-minute-old one.</p></div>
+  <div class="card proof"><h3>Network</h3><p>Same Wi-Fi and subnet, firewall rules allowing the app, clocks in sync. Pairing goes through OpenAI's servers anyway.</p></div>
+  <div class="card proof"><h3>VPN</h3><p>AdGuard's VPN covers Chrome but leaves the ChatGPT app out, and the step that fails runs inside the ChatGPT app. The browser sign-in, which does go through AdGuard, worked every time.</p></div>
+</div>
+
+<h2>The smoking gun</h2>
+<p>Every time, the ChatGPT app made a fresh hardware-backed key called <code>codex_remote_control_device_key</code> and opened the browser sign-in. The sign-in succeeded and handed control back to the app. Then, <strong>2.6 to 3.0 seconds later, the app deleted that key</strong> and showed "Authorize this phone" again. No crash and no error, just a quiet reset. Tapping the button started a brand-new sign-in, which is why the Google and passkey screens kept coming back. The log times below are UTC.</p>
+<pre><code>13:12:35.586  sign-in returns to ChatGPT (WebRedirectActivity)
+13:12:38.560  keystore: delete_key codex_remote_control_device_key:&lt;id&gt;
+13:12:56.304  sign-in returns to ChatGPT
+13:12:59.074  keystore: delete_key codex_remote_control_device_key:&lt;id&gt;
+13:13:14.194  sign-in returns to ChatGPT
+13:13:16.989  keystore: delete_key codex_remote_control_device_key:&lt;id&gt;</code></pre>
+<p>Claude matched that pattern to a stack of user reports on OpenAI's own Codex issue tracker, all against <strong>ChatGPT for Android 1.2026.265</strong>, the same version as my phone. The reports cover Samsung, Xiaomi, Vivo, Nothing and other phones, paired with Windows, macOS and Linux. One of them is titled <a href="https://github.com/openai/codex/issues/48777">"Android 1.2026.265 (27): Codex Remote repeatedly returns to 'Authorize this phone' after successful browser authorization"</a>. As of October 3, OpenAI staff hadn't replied in any of those threads, but users there reported that the <strong>1.2026.272 beta</strong>, out since at least October 1, fixes it. <a href="technical-analysis.html">Full evidence</a>.</p>
+
+<h2>The fix</h2>
+<p>Join the ChatGPT beta in the Google Play Store and install 1.2026.272. The beta sign-up looked stuck on my phone, but it had gone through: Google Play approved me as a beta tester, and about fifteen minutes later the update appeared.</p>
+<div class="timeline">
+  <article><strong>14:23:17 UTC</strong> · ChatGPT 1.2026.272 installed from Google Play.</article>
+  <article><strong>14:23:31 UTC</strong> · The laptop shows a fresh pairing code.</article>
+  <article><strong>14:23:58 UTC</strong> · Sign-in comes back to the app, and this time the key stays. Paired.</article>
+</div>
+<p>To be fair, the actual fix is OpenAI's: they shipped 1.2026.272. What ChatGPT didn't do was tell me that, or look at its own app to find out. <a href="fix.html">How to get out of the loop yourself</a>.</p>
+
+<h2 id="not-the-first-time">Not the first time</h2>
+<p>The day before, my OneNote had been broken for nearly three weeks. An OpenAI Codex session investigated and gave up. Claude then traced it to a preinstalled Intel driver that zeroes the IPv6 Flow Label partway through every connection, a defect Intel had been told about in 2025. That one is documented at <a href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/">Intel ICPS breaks IPv6, OneNote and Microsoft 365</a>.</p>
+<div class="grid">
+  <div class="card"><h3>October 2</h3><p>Codex gave up on a broken OneNote. Claude found the Intel driver behind it by 15:21 UTC.</p></div>
+  <div class="card"><h3>October 3, 14:24 UTC</h3><p>ChatGPT wouldn't look into its own pairing loop. Claude pinned it on a known bug and found the update that fixes it.</p></div>
+</div>
+<p>Two OpenAI dead ends, two Anthropic diagnoses, solved on October 2 and October 3.</p>
+
+<h2>Seeing this too?</h2>
+<p>Check your ChatGPT version first. If it's 1.2026.265, <a href="fix.html">follow the fix</a>. If you're on 1.2026.272 or newer and still looping, add your phone model, Android version, ChatGPT version and computer to the <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop/issues/1">tracking issue</a> or to <a href="https://github.com/openai/codex/issues/48777">openai/codex#48777</a>. Don't post email addresses, account IDs or codes.</p>
+
+<footer>Privacy-sanitized public evidence. Email addresses, account and device identifiers, network names and addresses are omitted. Log excerpts are trimmed and their key IDs replaced with &lt;id&gt;. · <a href="incident-state.json">Machine-readable state</a></footer>
+</main></body>
+</html>

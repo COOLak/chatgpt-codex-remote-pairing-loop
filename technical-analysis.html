@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Technical analysis · ChatGPT Codex Remote pairing loop</title>
+  <meta name="description" content="ChatGPT for Android 1.2026.265 deletes its Codex Remote pairing key 2.6 to 3.0 seconds after a successful sign-in. Logs, timings and ruled-out causes.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/technical-analysis.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ChatGPT Codex Remote pairing loop">
+  <meta property="og:title" content="Technical analysis">
+  <meta property="og:description" content="ChatGPT for Android 1.2026.265 deletes its Codex Remote pairing key 2.6 to 3.0 seconds after a successful sign-in. Logs, timings and ruled-out causes.">
+  <meta property="og:url" content="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/technical-analysis.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Story</a>
+  <a href="fix.html">Stuck in the loop?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="reports.html">Public reports</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop">Repository</a>
+</nav>
+<h1>Technical analysis</h1>
+<p>ChatGPT for Android 1.2026.265 completes the Codex Remote browser authorization, then discards its own pairing key and starts over.</p>
+<h2>Environment</h2>
+<ul>
+<li><strong>Phone:</strong> Samsung Galaxy S24 Ultra (SM-S928B), Android 16. One phone user profile has ChatGPT installed.</li>
+<li><strong>ChatGPT for Android:</strong> 1.2026.265 (version code 2626541), installed from Google Play, auto-updated on 2026-09-29. Fixed by 1.2026.272 (version code 2627220) from the Google Play beta.</li>
+<li><strong>Computer:</strong> Windows 11 Pro running the ChatGPT desktop app with Codex (MSIX package <code class="notranslate">OpenAI.Codex</code> 26.930.3930.0).</li>
+<li><strong>Account:</strong> the same personal ChatGPT account on the phone and the computer. Confirmed from the desktop app's own sign-in data, from the phone's Settings screen, and from the Codex Remote confirmation page in each of the three live attempts where the phone's screen was captured.</li>
+<li><strong>Network:</strong> both devices on the same Wi-Fi network and subnet. Codex Remote pairing runs through OpenAI's servers, not over the local network.</li>
+</ul>
+<h2>Method</h2>
+<p>Claude ran as an agent on the Windows computer. It installed Android SDK Platform-Tools and connected to the phone over USB debugging. It changed nothing in the phone's apps or settings. It used the phone's system log (<code class="notranslate">adb logcat</code>), package information (<code class="notranslate">dumpsys</code>), the visible text of the ChatGPT and browser screens during a live reproduction (via <code class="notranslate">uiautomator</code>, which writes a temporary screen dump that was deleted afterwards), the desktop app's logs, and public bug reports. Password-manager and passkey screens were filtered out and not recorded.</p>
+<p>Four parallel investigations covered the phone, the computer, the accounts on both devices and the public reports. Each of the four resulting hypotheses then went to two separate skeptic agents (also Claude), each told to refute it. Only one survived.</p>
+<h2>What the phone does</h2>
+<p>Each attempt follows the same sequence:</p>
+<ol>
+<li>The QR code is scanned and the app shows "Pairing..".</li>
+<li>The app creates a hardware-backed key, <code class="notranslate">codex_remote_control_device_key:&lt;id&gt;</code>, in Android Keystore.</li>
+<li>It opens the OpenAI sign-in page in a Chrome Custom Tab. Sign-in (Google account and passkey) and the Codex Remote confirmation page succeed.</li>
+<li>Chrome hands the result back to the app through <code class="notranslate">com.openai.chatgpt://auth.openai.com/android/com.openai.chatgpt/callback</code>. Android logs <code class="notranslate">Duplicate finish request</code> for <code class="notranslate">WebRedirectActivity</code> at this point. The same warning appears on the successful 1.2026.272 attempt, so it is a side effect of the redirect, not the bug.</li>
+<li>The app performs two keystore operations.</li>
+<li><strong>2.6–3.0 seconds after the sign-in returns, the app deletes the key</strong> and shows "Allow this phone to access ChatGPT on your computer? / Authorize this phone" again.</li>
+<li>Tapping <strong>Authorize this phone</strong> starts a new authorization from step 2. That is why the sign-in screens repeat.</li>
+</ol>
+<p>No crash, error dialog, or network error from the ChatGPT process appears in the log.</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Sign-in returned (UTC)</th>
+<th>Key deleted</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12:48:37.791</td>
+<td>12:48:40.488</td>
+<td>2.70 s</td>
+</tr>
+<tr>
+<td>12:50:15.883</td>
+<td>12:50:18.803</td>
+<td>2.92 s</td>
+</tr>
+<tr>
+<td>12:50:42.793</td>
+<td>12:50:45.482</td>
+<td>2.69 s</td>
+</tr>
+<tr>
+<td>12:54:32.788</td>
+<td>12:54:35.407</td>
+<td>2.62 s</td>
+</tr>
+<tr>
+<td>13:12:35.586</td>
+<td>13:12:38.560</td>
+<td>2.97 s</td>
+</tr>
+<tr>
+<td>13:12:56.304</td>
+<td>13:12:59.074</td>
+<td>2.77 s</td>
+</tr>
+<tr>
+<td>13:13:14.194</td>
+<td>13:13:16.989</td>
+<td>2.80 s</td>
+</tr>
+<tr>
+<td>13:14:19.925</td>
+<td>13:14:22.632</td>
+<td>2.71 s</td>
+</tr>
+<tr>
+<td><strong>14:23:58.316</strong> (1.2026.272)</td>
+<td><strong>not deleted</strong></td>
+<td>paired</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>Excerpt, trimmed, with key IDs replaced (times in UTC):</p>
+<pre class="notranslate"><code class="notranslate">13:12:14.216 keystore2: generate_key AppUid(10623) "codex_remote_control_device_key:&lt;id&gt;" TRUSTED_ENVIRONMENT
+13:12:35.586 ActivityTaskManager: Duplicate finish request for ... com.openai.chatgpt/...WebRedirectActivity
+13:12:38.560 keystore2: delete_key AppUid(10623) "codex_remote_control_device_key:&lt;id&gt;"
+13:12:41.333 keystore2: generate_key AppUid(10623) "codex_remote_control_device_key:&lt;id&gt;" TRUSTED_ENVIRONMENT
+</code></pre>
+<h2>What the computer does</h2>
+<ul>
+<li>The desktop app creates a pairing code successfully each time the dialog opens (<code class="notranslate">remoteControl/pairing/start</code>, <code class="notranslate">errorCode=null</code>) at 12:48:07, 12:49:35, 12:53:45 and 14:23:31 UTC.</li>
+<li>While the dialog is open, it polls for connected phones about every 1.6 seconds, and during the failing attempts the phone never appears. The desktop log doesn't record incoming pairing requests at all (not even for the successful pairing after the update), so it can't show whether the phone's request reached OpenAI's servers.</li>
+<li>Desktop authentication is healthy throughout the attempts: no 401 or 403 responses and no account switch on October 3. The desktop app had switched ChatGPT accounts on 2026-10-01 and still held a remote-control enrollment for the previous account, the trigger proposed in <a href="https://github.com/openai/codex/issues/48555" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48555/hovercard">#48555</a>. Updating the phone was enough to fix the loop, so that leftover isn't needed to explain it.</li>
+</ul>
+<h2>Ruled out</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Suspect</th>
+<th>Why it isn't the cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Different accounts</td>
+<td>Both devices are on the same personal ChatGPT account, checked on each device independently.</td>
+</tr>
+<tr>
+<td>Different workspace</td>
+<td>The account has only a personal workspace.</td>
+</tr>
+<tr>
+<td>Stale enrollment from a previous desktop account (<a href="https://github.com/openai/codex/issues/48555" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48555/hovercard">#48555</a>)</td>
+<td>Present: the desktop app switched accounts on 2026-10-01. Both skeptics refuted it as the cause, and updating the phone fixed the loop.</td>
+</tr>
+<tr>
+<td>Expired QR code</td>
+<td>Attempts 8 seconds after a fresh code failed exactly like attempts with an 18-minute-old code.</td>
+</tr>
+<tr>
+<td>Local network or firewall</td>
+<td>Same subnet, inbound rules allow the app, and pairing goes through OpenAI's servers.</td>
+</tr>
+<tr>
+<td>Clock skew</td>
+<td>Both devices sync time automatically and agreed to the second.</td>
+</tr>
+<tr>
+<td>VPN or ad blocker</td>
+<td>AdGuard's VPN includes Chrome but excludes the ChatGPT app, so the failing step's traffic goes directly over Wi-Fi. The browser sign-in, which does pass through AdGuard, succeeded every time.</td>
+</tr>
+<tr>
+<td>Phone profiles</td>
+<td>ChatGPT is installed only in the main user profile.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h2>What the logs can't show</h2>
+<p>Neither app logs the server's reply to the pairing request. So the logs can't distinguish a client bug from the server rejecting this client version's request. The fix is the same either way: install 1.2026.272 or newer.</p>
+<h2>The fix, verified</h2>
+<p>After updating to 1.2026.272 from the Google Play beta at 14:23:17 UTC, the computer showed a fresh code at 14:23:31 UTC. The sign-in returned at 14:23:58 UTC, the key was <strong>not</strong> deleted, and the phone paired.</p>
+<footer>Privacy-sanitized public evidence. Email addresses, account and device identifiers, network names and addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to the story</a></footer>
+</main></body>
+</html>

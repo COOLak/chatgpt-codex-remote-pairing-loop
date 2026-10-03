@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Timeline · ChatGPT Codex Remote pairing loop</title>
+  <meta name="description" content="Dated timeline of the ChatGPT for Android Codex Remote pairing loop, from the first public reports to the fix.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/timeline.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ChatGPT Codex Remote pairing loop">
+  <meta property="og:title" content="Timeline">
+  <meta property="og:description" content="Dated timeline of the ChatGPT for Android Codex Remote pairing loop, from the first public reports to the fix.">
+  <meta property="og:url" content="https://coolak.github.io/chatgpt-codex-remote-pairing-loop/timeline.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Story</a>
+  <a href="fix.html">Stuck in the loop?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="reports.html">Public reports</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/chatgpt-codex-remote-pairing-loop">Repository</a>
+</nav>
+<h1>Timeline</h1>
+<p>All times and dates are UTC.</p>
+<h2>2026-09-26 to 09-29: reports against 1.2026.265 show up on GitHub</h2>
+<p>Users open issues on OpenAI's Codex tracker describing the same "Authorize this phone" loop on ChatGPT for Android 1.2026.265: <a href="https://github.com/openai/codex/issues/48555" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48555/hovercard">#48555</a>, <a href="https://github.com/openai/codex/issues/48777" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48777/hovercard">#48777</a> and <a href="https://github.com/openai/codex/issues/49179" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/49179/hovercard">#49179</a>. See <a href="reports.html">public reports</a>.</p>
+<h2>2026-09-29, 16:31 UTC: the phone gets 1.2026.265</h2>
+<p>Google Play updates ChatGPT on the phone to 1.2026.265.</p>
+<h2>2026-10-01: the beta fixes it</h2>
+<p>Users on <a href="https://github.com/openai/codex/issues/48555" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48555/hovercard">#48555</a> and <a href="https://github.com/openai/codex/issues/48777" data-hovercard-type="issue" data-hovercard-url="/openai/codex/issues/48777/hovercard">#48777</a> report that ChatGPT for Android 1.2026.272, from the Google Play beta, pairs normally.</p>
+<h2>2026-10-02: the first OpenAI dead end</h2>
+<p>An OpenAI Codex session gives up on a broken OneNote. Claude traces it to a preinstalled Intel driver by 15:21 UTC. See <a href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/" rel="nofollow">the Intel ICPS incident</a>.</p>
+<h2>2026-10-03, 12:48–12:54 UTC: the loop</h2>
+<p>The computer generates three fresh pairing codes. The phone completes four sign-ins. Each one ends with "Authorize this phone" again.</p>
+<h2>2026-10-03: the second OpenAI dead end</h2>
+<p>Asked to look into its own app's pairing loop, ChatGPT declines.</p>
+<h2>2026-10-03, 13:04 UTC: Claude plugs in</h2>
+<p>Claude installs Android SDK Platform-Tools on the computer. At 13:05 UTC the phone allows USB debugging.</p>
+<h2>2026-10-03, 13:11–13:16 UTC: the loop, recorded</h2>
+<p>Four more attempts are recorded live from the phone's system log and screen text. Every sign-in succeeds, and every pairing key is deleted 2.6–3.0 seconds later.</p>
+<h2>2026-10-03, about 13:19–14:07 UTC: the investigation</h2>
+<p>Parallel investigations cover the phone, the computer, the accounts and the public reports. First findings reach me at 13:43 UTC: the app deletes its own pairing key, public reports describe the same loop on 1.2026.265, and users there say 1.2026.272 fixes it. Skeptics try to refute each hypothesis. One survives, and the verdict lands at 14:06 UTC. Claude checks the GitHub reports itself and recommends the update at 14:07 UTC.</p>
+<h2>2026-10-03, 14:08 UTC: the beta sign-up</h2>
+<p>The ChatGPT listing is opened in Google Play to join the beta. The sign-up looks stuck, but Google Play approves the enrollment.</p>
+<h2>2026-10-03, 14:23–14:24 UTC: fixed</h2>
+<ul>
+<li><strong>14:23:17 UTC:</strong> ChatGPT 1.2026.272 (version code 2627220) is installed.</li>
+<li><strong>14:23:31 UTC:</strong> the computer shows a fresh pairing code.</li>
+<li><strong>14:23:58 UTC:</strong> the sign-in returns, the key is kept, and the phone pairs.</li>
+</ul>
+<h2>2026-10-03: this tracker is created</h2>
+<footer>Privacy-sanitized public evidence. Email addresses, account and device identifiers, network names and addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to the story</a></footer>
+</main></body>
+</html>

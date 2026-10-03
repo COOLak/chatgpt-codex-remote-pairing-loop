@@ -1,0 +1,54 @@
+{
+  "schema": "incident-state/v1",
+  "incident": "ChatGPT for Android 1.2026.265 Codex Remote pairing loop",
+  "updated": "2026-10-03",
+  "status": "resolved_by_app_update",
+  "component": {
+    "product": "ChatGPT for Android",
+    "package": "com.openai.chatgpt",
+    "affected_version": "1.2026.265",
+    "affected_version_code": 2626541,
+    "fixed_version": "1.2026.272",
+    "fixed_version_code": 2627220,
+    "fixed_channel": "Google Play beta",
+    "feature": "Codex Remote (Connect computer)"
+  },
+  "environment": {
+    "phone": "Samsung Galaxy S24 Ultra (SM-S928B)",
+    "android": "16",
+    "computer_os": "Windows 11 Pro",
+    "desktop_app": "ChatGPT desktop with Codex, MSIX OpenAI.Codex 26.930.3930.0",
+    "account": "same personal ChatGPT account on both devices"
+  },
+  "evidence": {
+    "sign_ins_completed_before_fix": 8,
+    "pairings_completed_before_fix": 0,
+    "key_deleted_after_sign_in_seconds": {"min": 2.62, "max": 2.97},
+    "key_alias": "codex_remote_control_device_key:<id>",
+    "callback": "com.openai.chatgpt://auth.openai.com/android/com.openai.chatgpt/callback",
+    "fresh_qr_also_failed": true,
+    "after_fix": {"sign_in_returned": "2026-10-03T14:23:58Z", "key_deleted": false, "paired": true},
+    "ruled_out": ["account mismatch", "workspace mismatch", "expired QR code", "local network or firewall", "clock skew", "AdGuard VPN", "Android user profiles"]
+  },
+  "timeline": [
+    {"at": "2026-09-29T16:31:00Z", "event": "Phone auto-updates to ChatGPT 1.2026.265"},
+    {"at": "2026-10-03T12:48:07Z", "event": "First of three pairing codes generated; all attempts loop"},
+    {"at": "2026-10-03T13:04:00Z", "event": "Claude installs Android platform tools; the phone authorizes USB debugging at 13:05 UTC"},
+    {"at": "2026-10-03T14:23:17Z", "event": "ChatGPT 1.2026.272 installed from the Google Play beta"},
+    {"at": "2026-10-03T14:23:58Z", "event": "Sign-in returns and the key is kept; the phone pairs seconds later"}
+  ],
+  "reports": {
+    "openai_public": [
+      {"channel": "GitHub openai/codex", "url": "https://github.com/openai/codex/issues/48555", "opened": "2026-09-26", "staff_reply": false},
+      {"channel": "GitHub openai/codex", "url": "https://github.com/openai/codex/issues/48777", "opened": "2026-09-27", "staff_reply": false},
+      {"channel": "GitHub openai/codex", "url": "https://github.com/openai/codex/issues/49179", "opened": "2026-09-29", "staff_reply": false}
+    ],
+    "other": []
+  },
+  "vendor_fix": "ChatGPT for Android 1.2026.272 (beta channel as of 2026-10-03)",
+  "openai_self_diagnosis": "When the owner asked, ChatGPT declined to investigate its own app (owner's report; no transcript published)",
+  "diagnosed_by": "Anthropic Claude (agent on the affected computer, phone connected over ADB)",
+  "related": [
+    {"incident": "Intel ICPS zeroes IPv6 Flow Label", "url": "https://coolak.github.io/intel-icps-ipv6-flow-label-incident/", "note": "OpenAI Codex gave up; Claude found the cause"}
+  ]
+}
