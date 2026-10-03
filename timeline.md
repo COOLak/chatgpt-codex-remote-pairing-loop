@@ -48,4 +48,6 @@ The ChatGPT listing is opened in Google Play to join the beta. The sign-up looks
 - **14:23:31 UTC:** the computer shows a fresh pairing code.
 - **14:23:58 UTC:** the sign-in returns, the key is kept, and the phone pairs.
 
-## 2026-10-03: this tracker is created
+## 2026-10-03, 15:24 UTC: published
+
+This tracker is created.
